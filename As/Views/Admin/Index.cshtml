@@ -1,0 +1,35 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using As.Models
+<h1>Pending</h1>
+<table border="1">
+    <tr>
+        <td>Student name</td>
+        <td>Subject</td>
+        <td>Class want to move</td>
+        <td>option</td>
+    </tr>
+
+    @foreach (Pending p in ViewBag.pending)
+    {
+        <tr>
+            @foreach (Student s in ViewBag.Student)
+            {
+                if (@p.StudentId == s.StudentId)
+                {
+                    <td>@s.StudentName</td>
+                }
+            }
+            @foreach (ClassSubject cs in ViewBag.cs)
+            {
+                if (@p.ClassSubjectId == cs.ClassSubjectId)
+                {
+                    <td>@cs.Subject.SubjectName</td>
+                    <td>@cs.Class.ClassName</td>
+                }
+            }
+
+            <td><a asp-action="Accept" asp-controller="Admin" asp-route-id="@p.MoveId">Accept</a><a asp-action="Decline" asp-controller="Admin" asp-route-id="@p.MoveId">Decline</a></td>
+        </tr>
+    }
+
+</table>

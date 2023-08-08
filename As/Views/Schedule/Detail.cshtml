@@ -1,0 +1,35 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div><a asp-controller="Schedule" asp-action="Index">Home</a>/<a asp-action="TimeTable" asp-controller="Schedule">View Schedule</a>/View</div>
+<h2>Activity detail</h2>
+@{
+    List<string> daysOfWeek = new List<string>
+    {
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+    };
+}
+
+<table>
+    <tr>
+        <td>Date:</td>
+        <td>@daysOfWeek[ViewBag.detail.DayOfWeek-1]</td>
+    </tr>
+    <tr>
+        <td>Slot:</td>
+        <td>@ViewBag.detail.TimeSlot</td>
+    </tr>
+    <tr>
+        <td>Student group:</td>
+        <td>@ViewBag.detail.ClassSubject.Class.ClassName</td>
+    </tr>
+    <tr>
+        <td>Course:</td>
+        <td>@ViewBag.detail.ClassSubject.Subject.SubjectName</td>
+    </tr>
+</table>

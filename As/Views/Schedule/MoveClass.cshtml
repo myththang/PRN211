@@ -1,0 +1,100 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using As.Models
+@using System.Web
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    /* Styling for the header */
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    /* Styling for the table */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #999;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    /* Styling for table header cells */
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    /* Styling for table data cells */
+    td {
+        background-color: #fff;
+    }
+
+    /* Styling for table rows */
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    /* Styling for the link */
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        /* Styling for the link on hover */
+        a:hover {
+            text-decoration: underline;
+        }
+
+    /* Styling for the message alert */
+    .alert {
+        padding: 10px;
+        background-color: #f2f2f2;
+        border: 1px solid #ddd;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+</style>
+
+<div>
+    <a asp-controller="Schedule" asp-action="Index">Home</a> / Courses List
+</div>
+
+<h2>Courses for next semester</h2>
+
+<table>
+    <tr>
+        <th>Class</th>
+        <th>Course</th>
+        <th>Action</th>
+    </tr>
+    @foreach (StudentEnrollment se in ViewBag.course)
+    {
+        <tr>
+            <td>@se.ClassSubject.Class.ClassName</td>
+            <td>@se.ClassSubject.Subject.SubjectName</td>
+            <td>
+                <a asp-controller="Schedule" asp-action="MoveOut" asp-route-sid="@se.ClassSubject.Subject.SubjectId">Chuyển lớp</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@if (!string.IsNullOrEmpty(ViewBag.mess))
+{
+    <div class="alert">
+        <script>
+            var encodedMess = '@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewBag.mess))';
+            alert(decodeURIComponent(encodedMess));
+        </script>
+    </div>
+}

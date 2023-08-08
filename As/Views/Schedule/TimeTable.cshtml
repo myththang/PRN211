@@ -1,0 +1,146 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using As.Models
+@model List<Timetable>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div><a asp-controller="Schedule" asp-action="Index">Home</a>/View Schedule</div>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+    }
+
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        width: 90%;
+        max-width: 1200px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    tr:first-child {
+        background-color: #7191da;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    th,
+    td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ccc;
+    }
+
+    th {
+        font-size: 16px;
+    }
+
+    td {
+        font-size: 14px;
+    }
+
+    select {
+        padding: 6px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+        select:focus {
+            outline: none;
+            border-color: #7191da;
+        }
+
+    td a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+</style>
+@{
+    List<String> duration = new List<string>
+    {
+        "(7:30-9:50)",
+        "(10:00-12:20)",
+        "(12:50-15:10)",
+        "(15:20-17:40)"
+    };
+}
+<form id="fr" asp-controller="Schedule" asp-action="TimeTable" method="get">
+    <table>
+        <tr>
+            <td>
+                <select name="year" onchange="change()">
+                    @for (int i = 2020; i < 2025; i++)
+                    {
+                        if (i == ViewBag.Year)
+                        {
+                            <option selected value="@i">@i</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i</option>
+                        }
+
+                    }
+                </select><br />
+                <select name="week" onchange="change()">
+                    @foreach (string w in ViewBag.weeks)
+                    {
+                        if (w.Contains(ViewBag.currentWeek))
+                        {
+                            <option value="@w" selected>@w</option>
+                        }
+                        else
+                        {
+                            <option value="@w">@w</option>
+                        }
+
+                    }
+                </select>
+            </td>
+            <th>MON</th>
+            <th>TUE</th>
+            <th>WED</th>
+            <th>THU</th>
+            <th>FRI</th>
+            <th>SAT</th>
+            <th>SUN</th>
+        </tr>
+        @for (int i = 1; i <= 4; i++)
+        {
+            <tr>
+                <td>Slot @i</td>
+                @for (int k = 1; k <= 7; k++)
+                {
+                    bool check = true;
+                    foreach (Timetable t in ViewBag.data)
+                    {
+                        if (t.TimeSlot == i && t.DayOfWeek == k)
+                        {
+                            <td>
+                                <a asp-controller="Schedule" asp-action="Detail" asp-route-cid="@t.ClassSubject.ClassId" asp-route-sid="@t.ClassSubject.SubjectId">@t.ClassSubject.Subject.SubjectName</a>
+                                <p>@duration[t.TimeSlot-1]</p>
+                            </td>
+                            check = false;
+                        }
+
+                    }
+                    if (check)
+                    {
+                        <td>-</td>
+                    }
+                }
+            </tr>
+        }
+    </table>
+</form>
+<script>
+    function change() {
+        document.getElementById("fr").submit();
+    }
+</script>

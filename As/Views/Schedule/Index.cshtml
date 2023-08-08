@@ -1,0 +1,36 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!-- Trong trường hợp bạn đã có các thẻ style trong phần head của trang -->
+<style>
+    /* CSS cho các liên kết */
+    a {
+        text-decoration: none; /* Loại bỏ gạch chân */
+        color: #007bff; /* Màu văn bản cho liên kết */
+        display: inline-block; /* Hiển thị liên kết như các block nhỏ */
+        margin: 5px; /* Khoảng cách giữa các liên kết */
+        padding: 8px 12px; /* Đệm xung quanh liên kết */
+        border: 1px solid #007bff; /* Đường viền cho liên kết */
+        border-radius: 5px; /* Bo góc cho liên kết */
+        transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển đổi màu nền và màu văn bản */
+    }
+
+        /* Hiệu ứng khi di chuột vào liên kết */
+        a:hover {
+            background-color: #007bff; /* Màu nền khi di chuột vào */
+            color: #ffffff; /* Màu văn bản khi di chuột vào */
+        }
+
+    /* CSS cho đoạn văn bản bên dưới liên kết */
+    .description {
+        font-size: 14px; /* Cỡ chữ */
+        color: #666; /* Màu văn bản */
+        margin-top: 5px; /* Khoảng cách từ liên kết lên đoạn văn bản */
+    }
+</style>
+<a asp-controller="Schedule" asp-action="TimeTable">Weekly timetable</a>
+<div class="description">(Thời khóa biểu từng tuần)</div>
+
+<br />
+
+<a asp-controller="Schedule" asp-action="MoveClass">Move out class</a>
+<div class="description">(Xin chuyển lớp)</div>

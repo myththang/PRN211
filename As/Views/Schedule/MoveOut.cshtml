@@ -1,0 +1,142 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using As.Models
+@using System.Web
+@{
+    List<string> daysOfWeek = new List<string>
+    {
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+    };
+    List<String> duration = new List<string>
+    {
+        "(7:30-9:50)",
+        "(10:00-12:20)",
+        "(12:50-15:10)",
+        "(15:20-17:40)"
+    };
+}
+<meta charset="utf-8" />
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {
+        background-color: #f2f2f2;
+    }
+
+    select {
+        padding: 6px;
+    }
+
+    input[type="submit"],
+    input[type="button"] {
+        padding: 8px 16px;
+        background-color: #007bff;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+    }
+
+        input[type="submit"]:hover,
+        input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+    div.breadcrumb {
+        margin-bottom: 10px;
+    }
+
+        div.breadcrumb a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+            div.breadcrumb a:hover {
+                text-decoration: underline;
+            }
+
+    p.timetable-info {
+        margin: 5px 0;
+    }
+</style>
+@if (!string.IsNullOrEmpty(ViewBag.mess))
+{
+    <script>
+        var encodedMess = '@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewBag.mess))';
+        alert(decodeURIComponent(encodedMess));
+    </script>
+}
+<div class="breadcrumb">
+    <a asp-controller="Schedule" asp-action="Index">Home</a> / <a asp-controller="Schedule" asp-action="MoveClass">Courses List</a> / Change Class
+</div>
+<h2>Choose Class</h2>
+<form id="fr" asp-controller="Schedule" asp-action="MoveOut" method="get">
+    <input hidden name="sid" value="@ViewBag.sid">
+    <table>
+        <tr>
+            <td>Lớp (Class)</td>
+            <td>
+                <select name="cid" onchange="change()">
+                    @foreach (Class se in ViewBag.c)
+                    {
+                        if (@se.ClassId == ViewBag.selectcid)
+                        {
+                            <option value="@se.ClassId" selected>@se.ClassName</option>
+                        }
+                        else
+                        {
+                            <option value="@se.ClassId">@se.ClassName</option>
+                        }
+
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Thời gian học (TrainningTime)</td>
+            <td>
+                @foreach (Timetable tt in ViewBag.t)
+                {
+                    <p class="timetable-info">@daysOfWeek[tt.DayOfWeek-1] : Slot @tt.TimeSlot: @duration[tt.TimeSlot-1]</p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" name="save" value="Save" />
+                <input type="button" value="Cancel" onclick="redirectToURL()">
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script>
+    function change() {
+        document.getElementById("fr").submit();
+    }
+    function redirectToURL() {
+        window.location.href = "/Schedule/MoveClass";
+    }
+</script>
